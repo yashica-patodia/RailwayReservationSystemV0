@@ -1,0 +1,149 @@
+Convention:
+Class Attributes : Name_of Attribute(AccessSpecifier(private,protected,public),Encapsulation(static/non-static),Data Type(string,long long int,double,int))
+Class Member Functions: Name_of_Function(): (AccessSpecifier(private,protected,public,friend),Encapsulation(static/non-static/const static/virtual),Return Type(string,long long int,double,int,void))---Use of the function
+
+
+Design Plan for All the Classes:
+---------------------------------------------------------------------------------------------
+Class Name:Station
+Class Attributes:name_(private,non-static,string)
+Class Member Functions:
+Station(string name):
+        -(public,non-static)--parameterized Constructor
+GetName():
+       -(public,non-static,string)--returns the name of station
+GetDistance(const Station &s):
+       -(public,non-static,float)--returns the distance between two stations
+operator<<(ostream &os, const Station &st):
+       -(**friend**,non-static,ostream &)--output streaming operator to help output process as well as debugging
+Station& operator= (const Station& f) :
+        -(public,non-static,Station&)--copy assignment operator
+static void UTStation() :
+        -(public,static,void)--static unit testing function
+friend bool operator==(const Station& a, const Station& b)
+        -(**friend**,non-static,bool)--Equal To Operator(Utilization Operator)
+friend bool operator<(const Station& a, const Station& b):
+        -(**friend**,non-static,bool)--Less-Than To Operator(Utilization Operator)
+~Station():
+        -(public,non-static)--Destructor
+
+
+
+Class Name:Railways (Singleton Class)
+Class Attribute : vector<Station>sStation(public,static,Station);map<Station,int>sHashMap(public,static,<Station,int>);map<pair<int,int>,double>sDistance(public,static,pair<int,int>,double); static Railways *sIndianRailways(public,static,Railways*);
+Class Member Functions:
+Railways();
+        -(private,non-static)-non-parameterized
+static  Railways &GetRailways():
+        -(public,static,Railways&)--Get instance of singleton class
+friend ostream &operator<<(ostream &os, const Railways &r):
+        -(**friend**,non-static,ostream&)--output ostream
+double GetDistance(const Station& a, const Station& b):
+        -(public,non-static,double)--Distance between two stations
+Railways &operator=(const Railways &r):
+        -(public,non-static,Railways&)--Copy Assignment operator
+void printStations(vector<Station>sStation):
+        -(public,non-static,void)--Utilization functions
+void printDistance(map<pair<int,int>,double>sDistStations):
+        -(public,non-static,void)-Utilization functions
+static void UTRailways():
+        -(public,static,void)--Unit Testing functions
+~Railways():
+        -(private,non-static)-Destructor
+
+Class Name:Date
+Class Attribute:monthNames(private,const,char[][]),dayNames(private,const,char[][]),date_(private,non-static,unsigned int),month_,(private,non-static,enum:month)year_(private,non-static,unsigned int)
+Class Member Functions:
+Date(UINT d, UINT m, UINT y) :
+        -(public,non-static)--parameterized Constructor
+friend ostream &operator<<(ostream &os, const Date &date):
+        -(**friend**,non-static,ostream&)--output ostream
+bool validDate():
+        -(public,non-static,bool)--Checks if a given date is valid or not
+static void UTDate():
+        -(public,static,void)--Unit Testing functions
+~Date():
+        -(private,non-static)-Destructor
+
+Class Name:Passenger
+Class Attribute:string name_(private,non-static,string)string aadharNumber_(private,non-static,string),Date dob_(private,non-static,Date),string gender_(private,non-static,string),string mobileNumber_(private,non-static,string),string category_(private,non-static,string);
+Class Member Functions:
+Passenger(string name_,string aadharNumber_,Date dob_,string gender_,string mobileNumber_,string category_):
+            -(public,non-static)-parameterized Constructor
+Passenger(const Passenger &p):
+            -(public,non-static,Passenger)-Copy Assignment operator
+friend ostream &operator<<(ostream &os, const Passenger &p):
+            -(friend,non-static,ostream&)--output ostream
+~Passenger():
+            -(public,non-static)-Destructor
+static void UTPassenger()
+            -(public,static,void)--Unit Testing functions
+
+Class Name:Booking
+Class Attributes:Station fromStation_(private,non-static,Station)Station toStation_(private,non-static,Station);Date date_(private,non-static,Date);BookingClasses &bookingClass_(private,non-static,BookingClasses);Passenger *passenger_(private,non-static,Passenger);
+bool bookingStatus_(private,non-static,bool);string bookingMessage_(private,non-static,string);double fare_(private,non-static,double);long long int PNR_(private,non-static,long long int);
+static const double sBaseFarePerKM(public,static const,double);static vector<Booking> sBookings(public,static ,Booking);static long long int sBookingPNRSerial(public,static,long long int);static const  double sACSurcharge(public,static const,double);
+static const  double sLuxuryTaxPercent(public,static const,double);
+Class Member Functions:
+Booking(Station fromStation,Station toStation,Date date,BookingClasses &bookingClass,Passenger *passenger,bool bookingStatus,string bookingMessage,double fare)
+            -(public,non-static)-parameterized Constructor
+Booking(const Booking& f):
+            -(public,non-static,Passenger)-Copy Assignment operator
+long long int ComputeFare():
+            -(public,non-static,long long int ) Compute the fare
+friend ostream &operator<<(ostream &os, const Booking &bk)
+            -(friend,non-static,ostream&)--output ostream
+static void UTBooking():
+            -(public,static,void)--Unit Testing functions
+~Booking():
+            -(private,non-static)-Destructor
+
+BookingClasses(Abstract Class)  Polymorphic Hierarchy
+
+Class Member Functions: 
+BookingClasses():
+            -(public, non-static,non-virtual)-- **inline defined**(Constructor)
+~BookingClasses()
+            - (public,non-static,virtual)-- **inline defined** (Destructor)
+GetLoadFactor():
+            -( public,non-static,virtual,float )--Gets Load Factor
+GetName():
+            - (public,non-static,virtual,string) --Gets Name
+IsSitting():
+            - (public,non-static,virtual,boolean)--Return status of sitting
+IsAC():
+            - (public, non-static,virtual,boolean)-- Return status of AC
+GetNumberOfTiers():
+            - (public, non-static, virtual,int)-- Get number of Tiers
+ IsLuxury(): 
+            -(public,non-static,virtual,boolean)-- Status of Luxury
+Here the multi-level polymorphic hierarchy is rooted at BookingClasses which is an abstract base class.Here there are two levels of single inheritance and then 7 concrete classes.
+The first single-level abstraction is based on the fundamental property Seat/Berth. The second level of abstraction is whether it is AC/Non-AC.
+So we have in total (1+2+4) abstract classes i.e 
+Root-BookingClasses(1) 
+Second Level-SeatClasses and BerthClass(2)
+Third Level -ACSeatClass ,NonACSeatClass,ACBerthClass,NonACBerthClass(4)
+
+Polymorphic Hierarchy of Booking Classes Explained: 
+
+Level 0                                             BookingClasses
+Level 1                       BerthClass(IsSitting: false)          SeatClass(IsSitting: True)      **Inline**                                                                   
+Level 2           ACBerth(IsAC: true)     NACBerth(IsAC: false)  ACSeat(IsAC: true)     NACSeat(IsAC: false)  **Inline**
+
+Then we have 7 concrete classes . Every concrete booking class has all fixed properties and there is no need to construct more than one object for any of them. So there is  a singleton constant object for
+each which, kind of, will stand for its polymorphic type.
+The 7 concrete classes are-
+1)AC2Tier
+2)AC3Tier
+3)ACChairCar
+4)ACFirstClass
+5)FirstClass
+6)SecondSiiting
+7)Sleeper
+This hierarchy  is extensible in future as new booking classes can be added.
+
+
+
+
+
+
